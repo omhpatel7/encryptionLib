@@ -4,17 +4,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <assert.h>
+#include <errno.h>
 
 #define rc4_decrypt(x, y) rc4_encrypt(x, y)
 
 struct s_arcfour{
-    /* data */
+    int x;
 };
 
-typedef unsigned char int8;
+typedef struct s_arcfour Arcfour;
+typedef unsigned char uchar;
 typedef unsigned short int int16;
 typedef unsigned int int32;
 
-Arcfour *rc4_init(int8*, int16);
-int8 rc4Byte(void);
-int8 *rc4_encrypt(int8*, int16);
+Arcfour *rc4_init(uchar*, int16);
+uchar rc4Byte(void);
+uchar *rc4_encrypt(uchar*, int16);
