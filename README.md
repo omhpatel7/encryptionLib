@@ -38,7 +38,7 @@ The Makefile provides instructions for building the RC4 library and example prog
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/encryptionLib.git
+   git clone https://github.com/omhpatel7/encryptionLib.git
    cd encryptionLib
 
 2. Build the project sugin `make`:
