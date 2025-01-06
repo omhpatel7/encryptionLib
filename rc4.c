@@ -2,7 +2,7 @@
 
 #include <rc4.h>
 
-Arcfour *rc4_init(int8 *key, int16 size) {
+export Arcfour *rc4_init(int8 *key, int16 size) {
     Arcfour *p = malloc(sizeof(Arcfour));  // allocate memory
     if (!p) {  // check if malloc failed
         perror("malloc failed");
@@ -22,14 +22,14 @@ Arcfour *rc4_init(int8 *key, int16 size) {
 
     // Key-scheduling algorithm (KSA)
     for (p->i = 0; p->i < 256; p->i++) {
-        temp1 = p->i % size;  // Wrap key index if needed
-        temp2 = p->j + p->s[p->i] + key[temp1];
-        p->j = temp2 % 256;
+        temp1 = p->i % size;   // Ensure no overflow
+        temp2 = (p->j + p->s[p->i] + key[temp1]) % 256;  // Proper range
+        p->j = temp2;
 
         // Swap elements in the state array
-        temp1 = p->s[p->i];
+        int16 swap = p->s[p->i];
         p->s[p->i] = p->s[p->j];
-        p->s[p->j] = temp1;
+        p->s[p->j] = swap;
     }
 
     // Reset indices for encryption
@@ -39,27 +39,37 @@ Arcfour *rc4_init(int8 *key, int16 size) {
 }
 
 int8 rc4Byte(Arcfour *p) {
-    int8 temp;
-    p->i++;
-    p->j += p->s[p->i];
+    int16 temp;
+    p->i = (p->i + 1) % 256;
+    p->j = (p->j + p->s[p->i]) % 256;
+
+    // Swap
     temp = p->s[p->i];
     p->s[p->i] = p->s[p->j];
     p->s[p->j] = temp;
-    temp = p->s[p->i] + p->s[p->j];
-    return p->s[temp];
+
+    // Generate keystream byte
+    int16 t = (p->s[p->i] + p->s[p->j]) % 256;
+    return p->s[t];
 }
 
-int8 *rc4_encrypt(Arcfour *p, int8 *ct, int16 size) {
-    int16 x;
-    int8 *pt = malloc(size);  // allocate memory
-    if (!pt) {  // check if malloc failed
+
+export int8 *rc4_encrypt(Arcfour *p, int8 *ct, int16 size) {
+    int8 *output = malloc(size);
+    if (!output) {
         perror("malloc failed");
-        exit(1);  // exit if memory allocation failed
+        exit(1);
     }
 
-    for (x = 0; x < size; x++) {
-        pt[x] = ct[x] ^ rc4Byte(p);  // XOR the plaintext with the keystream
+    for (int16 x = 0; x < size; x++) {
+        output[x] = ct[x] ^ rc4Byte(p);
     }
 
-    return pt;
+    // printf("Ciphertext (Hex): ");
+    for (int16 x = 0; x < size; x++) {
+        // printf("%02x ", (unsigned char)output[x]);
+    }
+
+    return output;
 }
+
