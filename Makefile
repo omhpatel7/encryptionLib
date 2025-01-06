@@ -3,7 +3,7 @@ all: rc4 example
 
 # Build the 'example' executable from 'example.o'
 example: example.o
-	gcc example.o -o example -Wall -O2
+	gcc example.o rc4.o -o example -Wall -O2
 
 # Compile 'example.c' into the object file 'example.o'
 example.o: example.c rc4.h
