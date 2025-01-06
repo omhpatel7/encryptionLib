@@ -1,3 +1,5 @@
+# Makefile for the RC4 library and example program
+
 # Target to build all examples and the RC4 library
 all: rc4 example
 
