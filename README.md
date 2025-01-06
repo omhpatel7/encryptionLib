@@ -25,7 +25,7 @@ The header file includes necessary declarations and the structure of the RC4 cip
 
 ### example.c
 
-A simple program that generates a random key, encrypts a "Hello, World!" message, then decrypts it using the RC4 cipher. The program prints the encrypted text in hexadecimal and the decrypted text.
+A simple program that generates a random key, encrypts a "Hello, World!" message, then decrypts it using the RC4 cipher. Modify the "from" variable on line 50 to encrypt your preferred text. The program prints the encrypted text in hexadecimal and the decrypted text.
 
 ### Makefile
 
