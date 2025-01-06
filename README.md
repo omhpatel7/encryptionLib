@@ -48,10 +48,22 @@ The Makefile provides instructions for building the RC4 library and example prog
 
 ## Running the Example
 After compiling, run the example program:
+  
   ```bash
   ./example
+  ```
+This will output the generated key, encrypted text, and decrypted text.
+
+## Cleaning Up
+To remove all compiled files and the executable, run:
+   
+   ```bash
+   make clean
+   ```
 
 
+## Contributing
 
+Feel free to fork the repository, create a pull request, or open an issue if you encounter any problems or have suggestions for improvements.
 
    
